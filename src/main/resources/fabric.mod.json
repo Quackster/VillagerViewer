@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "villagerviewer",
+	"version": "1.0.0",
+	"name": "VillagerViewer",
+	"description": "View and edit a villager inventory by shift sneaking and left-clicking.",
+	"authors": [
+		"PtolemaicQueen"
+	],
+	"contact": {
+		"homepage": ""
+	},
+	"license": "GPLv3",
+	"icon": "assets/villagerviewer/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"org.oldskooler.villagerviewer.VillagerViewer"
+		],
+		"client": [
+			"org.oldskooler.villagerviewer.VillagerViewerClient"
+		]
+	},
+	"mixins": [],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.8",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
