@@ -1,11 +1,8 @@
 package org.oldskooler.villagerviewer.gui;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
@@ -30,7 +27,6 @@ public class VillagerInventoryScreen extends HandledScreen<VillagerInventoryScre
 		int screenY = (this.height - this.backgroundHeight) / 2;
 
 		context.drawTexture(
-				RenderPipelines.GUI_TEXTURED,
 				CONTAINER_TEXTURE,
 				screenX, screenY,
 				0, 0,
@@ -55,7 +51,6 @@ public class VillagerInventoryScreen extends HandledScreen<VillagerInventoryScre
 			int slotY = screenY + startY + (slot % columns) * slotSpacing;
 
 			context.drawTexture(
-					RenderPipelines.GUI_TEXTURED,
 					SLOT_TEXTURE,
 					slotX, slotY,
 					0, 0,
