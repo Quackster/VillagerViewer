@@ -3,7 +3,7 @@
 	"id": "villagerviewer",
 	"version": "1.0.0",
 	"name": "VillagerViewer",
-	"description": "VillagerViewer is a simple Minecraft Fabric mod that allows players to view and interact with a villager's inventory by sneaking and right-clicking on them.",
+	"description": "VillagerViewer is a simple Minecraft Fabric mod that allows players to view and interact with a villager's inventory by sneaking and right-clicking with a stick (configurable).",
 	"authors": [
 		"PtolemaicQueen"
 	],
