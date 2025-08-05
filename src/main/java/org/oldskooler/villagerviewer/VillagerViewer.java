@@ -1,5 +1,8 @@
 package org.oldskooler.villagerviewer;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.screen.ScreenHandlerType;
 import org.oldskooler.villagerviewer.config.VillagerEditConfig;
 import org.oldskooler.villagerviewer.gui.VillagerInventoryScreenHandler;
 import org.oldskooler.villagerviewer.gui.VillagerInventoryScreenHandlerFactory;
@@ -17,8 +20,6 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static net.minecraft.screen.ScreenHandlerType.GENERIC_9X1;
-
 public class VillagerViewer implements ModInitializer {
 	public static final String MOD_NAME = "VillagerViewer";
 	public static final String MOD_ID = MOD_NAME.toLowerCase();
@@ -26,8 +27,17 @@ public class VillagerViewer implements ModInitializer {
 
 	public static VillagerEditConfig CONFIG;
 
+
 	public static final ExtendedScreenHandlerType<VillagerInventoryScreenHandler, Integer> VILLAGER_SCREEN_HANDLER =
 			new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast());
+
+
+
+	/*public static final ScreenHandlerType<VillagerInventoryScreenHandler> VILLAGER_SCREEN_HANDLER =
+			Registry.register(Registries.SCREEN_HANDLER, Identifier.of("tutorial", "box_block"),
+					new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast()));
+
+*/
 
 	@Override
 	public void onInitialize() {
