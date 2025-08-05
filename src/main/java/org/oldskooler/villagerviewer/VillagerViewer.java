@@ -27,21 +27,16 @@ public class VillagerViewer implements ModInitializer {
 
 	public static VillagerEditConfig CONFIG;
 
-
 	public static final ScreenHandlerType<VillagerInventoryScreenHandler> VILLAGER_SCREEN_HANDLER =
 			Registry.register(Registries.SCREEN_HANDLER, Identifier.of(MOD_ID, "villager_screen"),
 					new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast()));
 
-	/*public static final ScreenHandlerType<VillagerInventoryScreenHandler> VILLAGER_SCREEN_HANDLER =
-			Registry.register(Registries.SCREEN_HANDLER, Identifier.of("tutorial", "box_block"),
-					new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast()));
-
-*/
-
 	@Override
 	public void onInitialize() {
 		CONFIG = VillagerEditConfig.load();
-		LOGGER.info(MOD_NAME + " config loaded: requireStick = {}", CONFIG.requireStick);
+
+		LOGGER.info("(server) Loading " + MOD_NAME);
+		LOGGER.info("(server) Config loaded: requireStick = {}", CONFIG.requireStick);
 
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 			if (world.isClient() || player.isSpectator()) {
@@ -59,5 +54,7 @@ public class VillagerViewer implements ModInitializer {
 
 			return ActionResult.PASS;
 		});
+
+		LOGGER.info("(server) Registered UseEntityCallback for Merchant interaction");
 	}
 }

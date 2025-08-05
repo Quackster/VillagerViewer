@@ -1,5 +1,6 @@
 package org.oldskooler.villagerviewer.gui;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -16,19 +17,16 @@ public class VillagerInventoryScreenHandler extends ScreenHandler {
 	public VillagerInventoryScreenHandler(int syncId, PlayerInventory playerInventory, int villagerId) {
 		super(VillagerViewer.VILLAGER_SCREEN_HANDLER, syncId);
 
-		MerchantEntity foundVillager = null;
-		Inventory foundInventory = null;
+		// Find and initialize villager and inventory
+		Entity entity = playerInventory.player.getWorld().getEntityById(villagerId);
 
-		if (playerInventory.player.getWorld().getEntityById(villagerId) instanceof MerchantEntity merchant) {
-			foundVillager = merchant;
-			foundInventory = merchant.getInventory();
-		}
-
-		this.villager = foundVillager;
-		this.villagerInventory = foundInventory;
-
-		if (this.villagerInventory != null) {
+		if (entity instanceof MerchantEntity merchant) {
+			this.villager = merchant;
+			this.villagerInventory = merchant.getInventory();
 			setupVillagerSlots();
+		} else {
+			this.villager = null;
+			this.villagerInventory = null;
 		}
 
 		setupPlayerInventory(playerInventory);
