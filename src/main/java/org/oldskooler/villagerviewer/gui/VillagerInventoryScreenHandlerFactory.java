@@ -8,7 +8,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-public class VillagerInventoryScreenHandlerFactory implements ExtendedScreenHandlerFactory {
+public class VillagerInventoryScreenHandlerFactory implements ExtendedScreenHandlerFactory<Integer> {
 	private final MerchantEntity villager;
 
 	public VillagerInventoryScreenHandlerFactory(MerchantEntity villager) {
