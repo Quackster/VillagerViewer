@@ -28,10 +28,9 @@ public class VillagerViewer implements ModInitializer {
 	public static VillagerEditConfig CONFIG;
 
 
-	public static final ExtendedScreenHandlerType<VillagerInventoryScreenHandler, Integer> VILLAGER_SCREEN_HANDLER =
-			new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast());
-
-
+	public static final ScreenHandlerType<VillagerInventoryScreenHandler> VILLAGER_SCREEN_HANDLER =
+			Registry.register(Registries.SCREEN_HANDLER, Identifier.of(MOD_ID, "villager_screen"),
+					new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast()));
 
 	/*public static final ScreenHandlerType<VillagerInventoryScreenHandler> VILLAGER_SCREEN_HANDLER =
 			Registry.register(Registries.SCREEN_HANDLER, Identifier.of("tutorial", "box_block"),
@@ -43,12 +42,6 @@ public class VillagerViewer implements ModInitializer {
 	public void onInitialize() {
 		CONFIG = VillagerEditConfig.load();
 		LOGGER.info(MOD_NAME + " config loaded: requireStick = {}", CONFIG.requireStick);
-
-		Registry.register(
-				Registries.SCREEN_HANDLER,
-				Identifier.of(MOD_ID.toLowerCase(), "villager_screen"),
-				VILLAGER_SCREEN_HANDLER
-		);
 
 		UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
 			if (world.isClient() || player.isSpectator()) {

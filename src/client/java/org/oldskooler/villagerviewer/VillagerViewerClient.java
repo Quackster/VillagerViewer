@@ -15,7 +15,6 @@ import org.oldskooler.villagerviewer.gui.VillagerInventoryScreenHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Environment(EnvType.CLIENT)
 public class VillagerViewerClient implements ClientModInitializer {
 	public static final String MOD_NAME = "VillagerViewer";
 	public static final String MOD_ID = MOD_NAME.toLowerCase();
@@ -25,10 +24,6 @@ public class VillagerViewerClient implements ClientModInitializer {
 	public static final ScreenHandlerType<VillagerInventoryScreenHandler> VILLAGER_SCREEN_HANDLER =
 			new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast());
 	 */
-	public static final ScreenHandlerType<VillagerInventoryScreenHandler> VILLAGER_SCREEN_HANDLER =
-			new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast());
-			//Registry.register(Registries.SCREEN_HANDLER, Identifier.of(MOD_ID, "villager_screen"),
-			//		new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, PacketCodecs.INTEGER.cast()));
 
 	@Override
 		public void onInitializeClient() {
@@ -38,7 +33,13 @@ public class VillagerViewerClient implements ClientModInitializer {
 				VILLAGER_SCREEN_HANDLER
 		);*/
 
-		HandledScreens.register(VILLAGER_SCREEN_HANDLER, VillagerInventoryScreen::new);
+		HandledScreens.register(VillagerViewer.VILLAGER_SCREEN_HANDLER, VillagerInventoryScreen::new);
 
+		/*
+		Registry.register(
+				Registries.SCREEN_HANDLER,
+				Identifier.of(MOD_ID.toLowerCase(), "villager_screen"),
+				VILLAGER_SCREEN_HANDLER
+		);*/
 	}
 }
