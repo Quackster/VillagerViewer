@@ -23,10 +23,10 @@
 	},
 	"mixins": [],
 	"depends": {
-		"fabricloader": ">=0.16.14",
-		"minecraft": "~1.21.7",
-		"java": ">=21",
-		"fabric-api": "*"
+      "fabricloader": ">=0.17.2",
+      "minecraft": "~1.21.9",
+      "java": ">=21",
+      "fabric-api": "*"
 	},
 	"suggests": {
 		"another-mod": "*"

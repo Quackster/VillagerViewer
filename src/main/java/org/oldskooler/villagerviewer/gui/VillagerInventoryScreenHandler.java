@@ -18,7 +18,7 @@ public class VillagerInventoryScreenHandler extends ScreenHandler {
 		super(VillagerViewer.VILLAGER_SCREEN_HANDLER, syncId);
 
 		// Find and initialize villager and inventory
-		Entity entity = playerInventory.player.getWorld().getEntityById(villagerId);
+		Entity entity = playerInventory.player.getEntityWorld().getEntityById(villagerId);
 
 		if (entity instanceof MerchantEntity merchant) {
 			this.villager = merchant;
