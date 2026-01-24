@@ -1,42 +1,40 @@
 package org.oldskooler.villagerviewer.gui;
 
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.passive.MerchantEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.player.Inventory;
 
-public class VillagerInventoryScreen extends HandledScreen<VillagerInventoryScreenHandler> {
-	private static final Identifier CONTAINER_TEXTURE = Identifier.of("textures/gui/container/horse.png");
-	private static final Identifier SLOT_TEXTURE = Identifier.of("textures/gui/sprites/recipe_book/slot_craftable.png");
+public class VillagerInventoryScreen extends AbstractContainerScreen<VillagerInventoryScreenHandler> {
+	private static final Identifier CONTAINER_TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/horse.png");
+	private static final Identifier SLOT_TEXTURE = Identifier.withDefaultNamespace("textures/gui/sprites/recipe_book/slot_craftable.png");
 
-	private final MerchantEntity villager;
+	private final AbstractVillager villager;
 	private float mouseX;
 	private float mouseY;
 
-	public VillagerInventoryScreen(VillagerInventoryScreenHandler handler, PlayerInventory inventory, Text title) {
+	public VillagerInventoryScreen(VillagerInventoryScreenHandler handler, Inventory inventory, Component title) {
 		super(handler, inventory, title);
 		this.villager = handler.villager;
 	}
 
 	@Override
-	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-		int screenX = (this.width - this.backgroundWidth) / 2;
-		int screenY = (this.height - this.backgroundHeight) / 2;
+	protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+		int screenX = (this.width - this.imageWidth) / 2;
+		int screenY = (this.height - this.imageHeight) / 2;
 
-		context.drawTexture(
-				RenderPipelines.GUI_TEXTURED,
+		guiGraphics.blit(
 				CONTAINER_TEXTURE,
 				screenX, screenY,
 				0, 0,
-				this.backgroundWidth, this.backgroundHeight,
+				this.imageWidth, this.imageHeight,
 				256, 256
 		);
 
-		int inventorySize = this.handler.villagerInventory.size();
+		int inventorySize = this.menu.villagerInventory.getContainerSize();
 		int rows = inventorySize / 2;
 		int columns = inventorySize / rows;
 
@@ -52,8 +50,7 @@ public class VillagerInventoryScreen extends HandledScreen<VillagerInventoryScre
 			int slotX = screenX + startX + (slot / columns) * slotSpacing;
 			int slotY = screenY + startY + (slot % columns) * slotSpacing;
 
-			context.drawTexture(
-					RenderPipelines.GUI_TEXTURED,
+			guiGraphics.blit(
 					SLOT_TEXTURE,
 					slotX, slotY,
 					0, 0,
@@ -62,8 +59,8 @@ public class VillagerInventoryScreen extends HandledScreen<VillagerInventoryScre
 			);
 		}
 
-		InventoryScreen.drawEntity(
-				context,
+		InventoryScreen.renderEntityInInventoryFollowsMouse(
+				guiGraphics,
 				screenX + 26, screenY + 18,
 				screenX + 78, screenY + 70,
 				17, 0.25F,
@@ -73,10 +70,10 @@ public class VillagerInventoryScreen extends HandledScreen<VillagerInventoryScre
 	}
 
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
 		this.mouseX = mouseX;
 		this.mouseY = mouseY;
-		super.render(context, mouseX, mouseY, delta);
-		this.drawMouseoverTooltip(context, mouseX, mouseY);
+		super.render(guiGraphics, mouseX, mouseY, delta);
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 }

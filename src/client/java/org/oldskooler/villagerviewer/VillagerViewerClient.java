@@ -1,7 +1,7 @@
 package org.oldskooler.villagerviewer;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.client.gui.screens.MenuScreens;
 import org.oldskooler.villagerviewer.gui.VillagerInventoryScreen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ public class VillagerViewerClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		LOGGER.info("(client) Loading " + MOD_NAME);
-		HandledScreens.register(VillagerViewer.VILLAGER_SCREEN_HANDLER, VillagerInventoryScreen::new);
+		MenuScreens.register(VillagerViewer.VILLAGER_SCREEN_HANDLER, VillagerInventoryScreen::new);
 		LOGGER.info("(client) Registered inventory screen for villagers");
 	}
 }

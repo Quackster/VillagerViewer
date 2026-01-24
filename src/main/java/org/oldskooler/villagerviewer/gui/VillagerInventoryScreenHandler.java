@@ -1,26 +1,26 @@
 package org.oldskooler.villagerviewer.gui;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.MerchantEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.npc.villager.AbstractVillager;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import org.oldskooler.villagerviewer.VillagerViewer;
 
-public class VillagerInventoryScreenHandler extends ScreenHandler {
-	public final MerchantEntity villager;
-	public final Inventory villagerInventory;
+public class VillagerInventoryScreenHandler extends AbstractContainerMenu {
+	public final AbstractVillager villager;
+	public final Container villagerInventory;
 
-	public VillagerInventoryScreenHandler(int syncId, PlayerInventory playerInventory, int villagerId) {
+	public VillagerInventoryScreenHandler(int syncId, Inventory playerInventory, int villagerId) {
 		super(VillagerViewer.VILLAGER_SCREEN_HANDLER, syncId);
 
 		// Find and initialize villager and inventory
-		Entity entity = playerInventory.player.getWorld().getEntityById(villagerId);
+		Entity entity = playerInventory.player.level().getEntity(villagerId);
 
-		if (entity instanceof MerchantEntity merchant) {
+		if (entity instanceof AbstractVillager merchant) {
 			this.villager = merchant;
 			this.villagerInventory = merchant.getInventory();
 			setupVillagerSlots();
@@ -33,7 +33,7 @@ public class VillagerInventoryScreenHandler extends ScreenHandler {
 	}
 
 	private void setupVillagerSlots() {
-		int inventorySize = this.villagerInventory.size();
+		int inventorySize = this.villagerInventory.getContainerSize();
 		int rows = inventorySize / 2;
 		int columns = inventorySize / rows;
 
@@ -53,7 +53,7 @@ public class VillagerInventoryScreenHandler extends ScreenHandler {
 		}
 	}
 
-	private void setupPlayerInventory(PlayerInventory playerInventory) {
+	private void setupPlayerInventory(Inventory playerInventory) {
 		// Player main inventory (3 rows)
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 9; col++) {
@@ -73,37 +73,37 @@ public class VillagerInventoryScreenHandler extends ScreenHandler {
 	}
 
 	@Override
-	public boolean canUse(PlayerEntity player) {
+	public boolean stillValid(Player player) {
 		return this.villager != null && this.villagerInventory != null;
 	}
 
 	@Override
-	public ItemStack quickMove(PlayerEntity player, int slotIndex) {
+	public ItemStack quickMoveStack(Player player, int slotIndex) {
 		ItemStack transferredStack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(slotIndex);
 
-		if (slot != null && slot.hasStack()) {
-			ItemStack originalStack = slot.getStack();
+		if (slot != null && slot.hasItem()) {
+			ItemStack originalStack = slot.getItem();
 			transferredStack = originalStack.copy();
 
-			int villagerSlotCount = this.villagerInventory != null ? this.villagerInventory.size() : 0;
+			int villagerSlotCount = this.villagerInventory != null ? this.villagerInventory.getContainerSize() : 0;
 
 			if (slotIndex < villagerSlotCount) {
 				// Moving from villager inventory to player inventory
-				if (!this.insertItem(originalStack, villagerSlotCount, this.slots.size(), true)) {
+				if (!this.moveItemStackTo(originalStack, villagerSlotCount, this.slots.size(), true)) {
 					return ItemStack.EMPTY;
 				}
 			} else {
 				// Moving from player inventory to villager inventory
-				if (!this.insertItem(originalStack, 0, villagerSlotCount, false)) {
+				if (!this.moveItemStackTo(originalStack, 0, villagerSlotCount, false)) {
 					return ItemStack.EMPTY;
 				}
 			}
 
 			if (originalStack.isEmpty()) {
-				slot.setStack(ItemStack.EMPTY);
+				slot.set(ItemStack.EMPTY);
 			} else {
-				slot.markDirty();
+				slot.setChanged();
 			}
 		}
 
