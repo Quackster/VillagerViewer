@@ -1,6 +1,6 @@
 package org.oldskooler.villagerviewer.gui;
 
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
-public class VillagerInventoryScreenHandlerFactory implements ExtendedScreenHandlerFactory<Integer> {
+public class VillagerInventoryScreenHandlerFactory implements ExtendedMenuProvider<Integer> {
 	private final AbstractVillager villager;
 
 	public VillagerInventoryScreenHandlerFactory(AbstractVillager villager) {

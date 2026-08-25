@@ -2,7 +2,7 @@ package org.oldskooler.villagerviewer;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -26,8 +26,8 @@ public class VillagerViewer implements ModInitializer {
 	public static VillagerEditConfig CONFIG;
 
 	public static final MenuType<VillagerInventoryScreenHandler> VILLAGER_SCREEN_HANDLER =
-			Registry.register(BuiltInRegistries.MENU, Identifier.fromNamespaceAndPath(MOD_ID, "villager_screen"),
-					new ExtendedScreenHandlerType<>(VillagerInventoryScreenHandler::new, ByteBufCodecs.INT));
+			Registry.register(BuiltInRegistries.MENU, Identifier.tryParse(MOD_ID + ":villager_screen"),
+					new ExtendedMenuType<>(VillagerInventoryScreenHandler::new, ByteBufCodecs.INT));
 
 	@Override
 	public void onInitialize() {
