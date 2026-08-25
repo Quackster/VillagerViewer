@@ -37,7 +37,7 @@ config/villagerviewer.properties
 
 * Minecraft version compatible with the APIs used
 * Fabric API
-* Java 17+
+* Java 25+
 
 ## License
 

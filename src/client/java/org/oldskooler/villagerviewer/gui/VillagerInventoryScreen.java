@@ -1,16 +1,17 @@
 package org.oldskooler.villagerviewer.gui;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.npc.villager.AbstractVillager;
 import net.minecraft.world.entity.player.Inventory;
 
 public class VillagerInventoryScreen extends AbstractContainerScreen<VillagerInventoryScreenHandler> {
-	private static final Identifier CONTAINER_TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/horse.png");
-	private static final Identifier SLOT_TEXTURE = Identifier.withDefaultNamespace("textures/gui/sprites/recipe_book/slot_craftable.png");
+	private static final Identifier CONTAINER_TEXTURE = Identifier.tryParse("minecraft:textures/gui/container/horse.png");
+	private static final Identifier SLOT_TEXTURE = Identifier.tryParse("minecraft:textures/gui/sprites/recipe_book/slot_craftable.png");
 
 	private final AbstractVillager villager;
 	private float mouseX;
@@ -22,11 +23,21 @@ public class VillagerInventoryScreen extends AbstractContainerScreen<VillagerInv
 	}
 
 	@Override
-	protected void renderBg(GuiGraphics guiGraphics, float delta, int mouseX, int mouseY) {
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float delta) {
+		this.mouseX = mouseX;
+		this.mouseY = mouseY;
+		extractBackground(guiGraphics, mouseX, mouseY, delta);
+		super.extractRenderState(guiGraphics, mouseX, mouseY, delta);
+		extractTooltip(guiGraphics, mouseX, mouseY);
+	}
+
+	@Override
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float delta) {
 		int screenX = (this.width - this.imageWidth) / 2;
 		int screenY = (this.height - this.imageHeight) / 2;
 
 		guiGraphics.blit(
+				RenderPipelines.GUI_TEXTURED,
 				CONTAINER_TEXTURE,
 				screenX, screenY,
 				0, 0,
@@ -51,6 +62,7 @@ public class VillagerInventoryScreen extends AbstractContainerScreen<VillagerInv
 			int slotY = screenY + startY + (slot % columns) * slotSpacing;
 
 			guiGraphics.blit(
+					RenderPipelines.GUI_TEXTURED,
 					SLOT_TEXTURE,
 					slotX, slotY,
 					0, 0,
@@ -59,7 +71,7 @@ public class VillagerInventoryScreen extends AbstractContainerScreen<VillagerInv
 			);
 		}
 
-		InventoryScreen.renderEntityInInventoryFollowsMouse(
+		InventoryScreen.extractEntityInInventoryFollowsMouse(
 				guiGraphics,
 				screenX + 26, screenY + 18,
 				screenX + 78, screenY + 70,
@@ -67,13 +79,5 @@ public class VillagerInventoryScreen extends AbstractContainerScreen<VillagerInv
 				this.mouseX, this.mouseY,
 				this.villager
 		);
-	}
-
-	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-		this.mouseX = mouseX;
-		this.mouseY = mouseY;
-		super.render(guiGraphics, mouseX, mouseY, delta);
-		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 }
